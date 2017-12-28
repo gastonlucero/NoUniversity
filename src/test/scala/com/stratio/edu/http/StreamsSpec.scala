@@ -1,39 +1,45 @@
 package com.stratio.edu.http
 
-import java.util.concurrent.TimeUnit
-
 import akka.actor.ActorSystem
-import akka.stream.ActorMaterializer
-import akka.stream.scaladsl.Source
-import akka.stream.testkit.scaladsl.TestSink
-import com.typesafe.config.ConfigFactory
-import org.scalatest.concurrent.ScalaFutures
-import org.scalatest.time.{Millis, Seconds, Span}
-import org.scalatest.{Matchers, WordSpec}
+import akka.stream.{ActorMaterializer, ClosedShape}
+import akka.stream.scaladsl.{Broadcast, Flow, GraphDSL, Keep, RunnableGraph, Sink, Source}
+import akka.{Done, NotUsed}
 
-import scala.concurrent.duration.FiniteDuration
+import scala.concurrent.Future
 
-class StreamsSpec extends WordSpec with Matchers with ScalaFutures {
+object StreamsSpec extends App {
 
-  implicit val system = ActorSystem(
-    "test",
-    ConfigFactory.parseString("akka.test.single-expect-default=10 seconds")
-      .withFallback(ConfigFactory.load())
-  )
+  implicit val system = ActorSystem("stratio")
 
-  implicit val executor = system.dispatcher
   implicit val materializer = ActorMaterializer()
-  implicit val defaultPatience = PatienceConfig(timeout = Span(60, Seconds), interval = Span(60000, Millis))
+
+  val source: Source[Int, NotUsed] = Source(1 to 100)
+  val sink: Sink[Double, Future[Done]] = Sink.foreach(println)
+
+  val areaFlow: Flow[Int, Double, _] = Flow[Int].map(i => Math.PI * Math.pow(i, 2))
 
 
+  val streamToSink: RunnableGraph[NotUsed] = source.via(areaFlow).to(sink)
+  val streamViaMat: RunnableGraph[Future[Done]] = source.via(areaFlow).toMat(sink)(Keep.right)
+  streamToSink.run()
+  streamViaMat.run()
 
-  "Akka Streams !!!" should {
-    "Sum test" in {
-      val sourceUnderTest = Source(1 to 4)
-      val response = sourceUnderTest
-        .runWith(TestSink.probe[Int])
-        .expectNext(FiniteDuration(20, TimeUnit.SECONDS),1)
-assert(response == 1)
-    }
-  }
+  val perimeterFlow: Flow[Int, Double, NotUsed] = Flow[Int].map(i => i * 2 * Math.PI)
+  val sumFlow: Flow[Int, Double, NotUsed] = Flow[Int].fold(0.0)((acc, next) => acc + next)
+
+  val circleGraph = RunnableGraph.fromGraph(GraphDSL.create(){
+    implicit builder: GraphDSL.Builder[NotUsed] =>
+      import GraphDSL.Implicits._
+      val broadcast = builder.add(Broadcast[Int](3))
+      source ~> broadcast
+      broadcast ~> areaFlow ~> sink
+      broadcast ~> perimeterFlow ~> sink
+      broadcast ~> sumFlow ~> sink
+
+      ClosedShape
+  })
+
+  circleGraph.run()
+  system.terminate()
+
 }
