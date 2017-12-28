@@ -1,7 +1,7 @@
 package com.stratio.edu.http
 
 import akka.actor.ActorSystem
-import akka.stream.{ActorMaterializer, ClosedShape}
+import akka.stream.{ActorMaterializer, ClosedShape, OverflowStrategy}
 import akka.stream.scaladsl.{Broadcast, Flow, GraphDSL, Keep, Merge, RunnableGraph, Sink, Source}
 import akka.{Done, NotUsed}
 
@@ -16,13 +16,17 @@ object StreamsSpec extends App {
   val source: Source[Int, NotUsed] = Source(1 to 100)
   val sink: Sink[Double, Future[Done]] = Sink.foreach(println)
 
-  val areaFlow: Flow[Int, Double, _] = Flow[Int].map(i => Math.PI * Math.pow(i, 2))
+  val areaFlow: Flow[Int, Double, _] = Flow[Int].map(i => {
+    Thread.sleep(10000)
+//    Math.PI * Math.pow(i, 2)
+    i*1.0
+  })
 
 
-  val streamToSink: RunnableGraph[NotUsed] = source.via(areaFlow).to(sink)
+  val streamToSink: RunnableGraph[NotUsed] = source.via(areaFlow).buffer(1, OverflowStrategy.dropNew).to(sink)
   val streamViaMat: RunnableGraph[Future[Done]] = source.via(areaFlow).toMat(sink)(Keep.right)
   streamToSink.run()
-  streamViaMat.run()
+//  streamViaMat.run()
 
   val perimeterFlow: Flow[Int, Double, NotUsed] = Flow[Int].map(i => i * 2 * Math.PI)
   val sumFlow: Flow[Int, Double, NotUsed] = Flow[Int].fold(0.0)((acc, next) => acc + next)
@@ -40,7 +44,7 @@ object StreamsSpec extends App {
       ClosedShape
   })
 
-  circleGraph.run()
+//  circleGraph.run()
   system.terminate()
 
 }
