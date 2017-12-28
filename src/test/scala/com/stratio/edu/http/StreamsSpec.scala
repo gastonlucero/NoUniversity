@@ -2,7 +2,7 @@ package com.stratio.edu.http
 
 import akka.actor.ActorSystem
 import akka.stream.{ActorMaterializer, ClosedShape}
-import akka.stream.scaladsl.{Broadcast, Flow, GraphDSL, Keep, RunnableGraph, Sink, Source}
+import akka.stream.scaladsl.{Broadcast, Flow, GraphDSL, Keep, Merge, RunnableGraph, Sink, Source}
 import akka.{Done, NotUsed}
 
 import scala.concurrent.Future
@@ -31,11 +31,12 @@ object StreamsSpec extends App {
     implicit builder: GraphDSL.Builder[NotUsed] =>
       import GraphDSL.Implicits._
       val broadcast = builder.add(Broadcast[Int](3))
-      source ~> broadcast
-      broadcast ~> areaFlow ~> sink
-      broadcast ~> perimeterFlow ~> sink
-      broadcast ~> sumFlow ~> sink
-
+      val merge = builder.add(Merge[Double](3))
+      source ~> broadcast //1 input N output
+                broadcast ~> areaFlow  ~> merge
+                broadcast ~> perimeterFlow ~>merge
+                broadcast ~> sumFlow ~> merge
+                                        merge ~> sink //N inputs  1 output
       ClosedShape
   })
 
