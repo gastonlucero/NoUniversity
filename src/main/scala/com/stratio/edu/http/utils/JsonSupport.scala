@@ -13,8 +13,6 @@ import com.stratio.edu.http.User
   */
 trait JsonSupport extends SprayJsonSupport with DefaultJsonProtocol {
 
-  implicit val serviceJsonFormat = jsonFormat4(Service)
-  implicit val servicesJsonFormat = jsonFormat1(Services)
   implicit val upgradeServiceJsonFormat = jsonFormat2(UpgradeService)
 
   implicit val userJsonFormat = jsonFormat4(User)
