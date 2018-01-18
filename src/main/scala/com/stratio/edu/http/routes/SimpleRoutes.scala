@@ -9,10 +9,12 @@ import akka.http.scaladsl.server.directives.PathDirectives.path
 import com.stratio.edu.http.utils.ConfigComponent
 
 
-class SimpleRoutes(implicit val system: ActorSystem) extends ConfigComponent {
+trait SimpleRoutes extends ConfigComponent {
+
+  implicit val system: ActorSystem
 
   //Route es a type defined = RequestContext ⇒ Future[RouteResult]
-  lazy val routes: Route =
+  lazy val simpleRoutes: Route =
     pathSingleSlash {
       complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, "<html><body><b>Stratio No University!</b></body></html>"))
     } ~

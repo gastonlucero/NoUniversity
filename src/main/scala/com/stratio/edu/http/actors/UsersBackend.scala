@@ -3,9 +3,10 @@ package com.stratio.edu.http.actors
 import com.stratio.edu.http.utils.ConfigComponent
 import com.stratio.edu.http.{ActionPerformed, User, Users}
 
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.Future
+import scala.concurrent.ExecutionContext.Implicits.global
 
-class UsersBackend(implicit val ec: ExecutionContext) extends ConfigComponent {
+class UsersBackend() extends ConfigComponent {
 
   private var usersCache = Set.empty[User]
 

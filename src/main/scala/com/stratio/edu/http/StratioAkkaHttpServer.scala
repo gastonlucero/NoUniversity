@@ -4,12 +4,11 @@ import akka.actor.ActorSystem
 import akka.http.scaladsl.Http.ServerBinding
 import akka.http.scaladsl.{Http, HttpExt}
 import akka.stream.ActorMaterializer
-import com.stratio.edu.http.routes.ComposedDirectivesRoutes
-import com.stratio.edu.http.utils.ConfigComponent
+import com.stratio.edu.http.routes._
 
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.{Failure, Success}
-
+import akka.http.scaladsl.server.Directives._
 
 object Main extends App{
   val server = new StratioAkkaHttpServer
@@ -17,7 +16,8 @@ object Main extends App{
 
 }
 
-class StratioAkkaHttpServer extends ConfigComponent {
+class StratioAkkaHttpServer
+  extends SimpleRoutes  with JoinedRoutes with ExceptionRejectionRoutes with ComposedDirectivesRoutes with AdvancedDirectivesRoutes{
 
   //Used for actors
   implicit val system: ActorSystem = ActorSystem("StratioActorSystem")
@@ -31,11 +31,9 @@ class StratioAkkaHttpServer extends ConfigComponent {
     //This will create an Http server,that be used below to binding the httpRoutes
     val httpServer: HttpExt = Http() //TODO
 
-    //This class contains all the httproutes accessible through the webServer
-//    val httpRoutes = new SimpleRoutes()
+   val httpRoutes = simpleRoutes ~ joinedRoutes ~ exceptionRoutes ~ composedRoutes ~ advancedRoutes
 
-val httpRoutes = new ComposedDirectivesRoutes()
-    val serverBindingFuture: Future[ServerBinding] = httpServer.bindAndHandle(httpRoutes.routes, "0.0.0.0", config.getInt("port"))
+    val serverBindingFuture: Future[ServerBinding] = httpServer.bindAndHandle(httpRoutes, "0.0.0.0", config.getInt("port"))
 
     //Because the bind return a Future, if, it was not succesfull , the app is terminate
     serverBindingFuture.onComplete {

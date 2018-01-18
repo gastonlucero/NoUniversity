@@ -1,10 +1,10 @@
-package com.stratio.edu.http
+package com.stratio.edu.http.streams
 
 import java.util.concurrent.TimeUnit
 
 import akka.actor.ActorSystem
 import akka.stream.scaladsl.{Broadcast, Flow, GraphDSL, Keep, Merge, RunnableGraph, Sink, Source}
-import akka.stream.{ActorMaterializer, ClosedShape, OverflowStrategy, ThrottleMode}
+import akka.stream.{ActorMaterializer, ClosedShape, OverflowStrategy}
 import akka.{Done, NotUsed}
 
 import scala.concurrent.Future
@@ -12,7 +12,7 @@ import scala.concurrent.duration._
 
 object StreamsSpec extends App {
 
-  implicit val system = ActorSystem("stratio")
+  implicit val system = ActorSystem("nouniversity")
 
   implicit val materializer = ActorMaterializer()
 
@@ -21,25 +21,19 @@ object StreamsSpec extends App {
   val sink: Sink[Double, Future[Done]] = Sink.foreach(println)
 
   val areaFlow: Flow[Int, Double, _] = Flow[Int].map(i => {
-    //    Math.PI * Math.pow(i, 2)
-    i * 1.0
+    Math.PI * Math.pow(i, 2)
   })
 
-
-  val streamToSink: RunnableGraph[NotUsed] = source.via(areaFlow).via(Flow[Double]
-    .throttle(1, 1.second, 1, ThrottleMode.shaping))
-    .to(sink)
+  val streamToSink: RunnableGraph[NotUsed] = source.via(areaFlow).to(sink)
 
   val bufferedSink2 = Flow[Int].buffer(1, OverflowStrategy.fail)
-    .via(Flow[Int]
-      .throttle(1, 1.second, 1, ThrottleMode.shaping))
     .toMat(Sink.foreach(println))(Keep.right)
 
   source.to(bufferedSink2).run()
 
   val streamViaMat: RunnableGraph[Future[Done]] = source.via(areaFlow).toMat(sink)(Keep.right)
-//  streamToSink.run()
-  //  streamViaMat.run()
+  streamToSink.run()
+  streamViaMat.run()
 
   val perimeterFlow: Flow[Int, Double, NotUsed] = Flow[Int].map(i => i * 2 * Math.PI)
   val sumFlow: Flow[Int, Double, NotUsed] = Flow[Int].fold(0.0)((acc, next) => acc + next)
@@ -57,7 +51,7 @@ object StreamsSpec extends App {
       ClosedShape
   })
 
-  //  circleGraph.run()
-  // system.terminate()
+  circleGraph.run()
+  system.terminate()
 
 }

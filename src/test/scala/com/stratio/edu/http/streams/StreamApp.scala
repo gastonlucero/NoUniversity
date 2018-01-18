@@ -1,5 +1,6 @@
-package com.stratio.edu.http
-import java.io.File
+package com.stratio.edu.http.streams
+
+import java.nio.file.Paths
 
 import akka.NotUsed
 import akka.actor.ActorSystem
@@ -10,16 +11,18 @@ import akka.util.ByteString
 import scala.concurrent._
 import scala.concurrent.duration._
 
-object StreamApp  {
+object StreamApp {
 
   def lineSink(filename: String): Sink[String, Future[IOResult]] = {
     Flow[String]
       .alsoTo(Sink.foreach(s => println(s"$filename: $s")))
       .map(s => ByteString(s + "\n"))
-      .toMat(FileIO.toFile(new File(filename)))(Keep.right)
+      .toMat(FileIO.toPath(Paths.get(filename)))(Keep.right)
   }
 
   def main(args: Array[String]): Unit = {
+
+
 
     implicit val system = ActorSystem("streamapp")
     implicit val materializer = ActorMaterializer()

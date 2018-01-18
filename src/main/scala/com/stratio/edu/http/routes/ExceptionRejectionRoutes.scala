@@ -8,7 +8,9 @@ import akka.http.scaladsl.server.directives.RouteDirectives.complete
 import akka.http.scaladsl.server.{ExceptionHandler, MethodRejection, RejectionHandler}
 import com.stratio.edu.http.utils.{ConfigComponent, JsonSupport}
 
-class ExceptionRejectionRoutes(implicit val system: ActorSystem) extends JsonSupport with ConfigComponent {
+trait ExceptionRejectionRoutes extends JsonSupport with ConfigComponent {
+
+  implicit val system: ActorSystem
 
   def exceptionHandler: ExceptionHandler =
     ExceptionHandler {
@@ -33,7 +35,7 @@ class ExceptionRejectionRoutes(implicit val system: ActorSystem) extends JsonSup
     }
     .result()
 
-  lazy val routes =
+  lazy val exceptionRoutes =
     (handleRejections(myRejectionHandler) & handleExceptions(exceptionHandler)) {
       pathPrefix("rejections") {
         pathEnd {

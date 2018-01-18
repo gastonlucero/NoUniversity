@@ -17,13 +17,15 @@ import com.stratio.edu.http.utils.ConfigComponent
   * or could be an or operator (path("paginated") | path("all")) = here the directive says "is the request is to context pagianted or all,
   * execute for both cases the given route
   */
-class JoinedRoutes(implicit val system: ActorSystem) extends ConfigComponent {
+trait JoinedRoutes extends ConfigComponent {
+
+  implicit val system: ActorSystem
 
   /**
     * When differents contexts have the same urlPrefix, is usefull combine then
     * In this case under /joined  there are two context , /users and /services
     */
-  lazy val routes = pathPrefix("joined") {
+  lazy val joinedRoutes = pathPrefix("joined") {
     userRoutes ~ servicesRoutes
   }
 
