@@ -12,7 +12,8 @@ import scala.util.{Failure, Success}
 
 
 object StratioAkkaHttpServer extends App
-  with SimpleRoutes with JoinedRoutes with ExceptionRejectionRoutes with ComposedDirectivesRoutes with AdvancedDirectivesRoutes {
+  with SimpleRoutes with JoinedRoutes with ExceptionRejectionRoutes with ComposedDirectivesRoutes with AdvancedDirectivesRoutes
+with ActorDirectivesRoutes {
 
   //Used for actors
   implicit val system: ActorSystem = ActorSystem("StratioActorSystem")
@@ -24,7 +25,7 @@ object StratioAkkaHttpServer extends App
   //This will create an Http server,that be used below to binding the httpRoutes
   val httpServer: HttpExt = Http()
 
-  val httpRoutes = simpleRoutes ~ joinedRoutes ~ exceptionRoutes ~ composedRoutes ~ advancedRoutes
+  val httpRoutes = simpleRoutes ~ joinedRoutes ~ exceptionRoutes ~ composedRoutes ~ advancedRoutes ~ actorRoutes
 
   val serverBindingFuture: Future[ServerBinding] = httpServer.bindAndHandle(httpRoutes, "0.0.0.0", 8080)
 
