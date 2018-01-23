@@ -1,6 +1,6 @@
 package com.stratio.edu.http
 
-case class UpgradeService(id: String, version: String)
+case class Service(id: String, version: String)
 
 case class User(id: String, name: String, lastName: String, email: String)
 

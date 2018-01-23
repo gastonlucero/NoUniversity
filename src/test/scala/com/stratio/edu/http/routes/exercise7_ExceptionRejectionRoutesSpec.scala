@@ -2,7 +2,6 @@ package com.stratio.edu.http.routes
 
 import akka.http.scaladsl.model._
 import akka.http.scaladsl.testkit.ScalatestRouteTest
-import com.stratio.edu.http.routes.ExceptionRejectionRoutes
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.{Matchers, WordSpec}
 
@@ -13,7 +12,7 @@ import org.scalatest.{Matchers, WordSpec}
   * ASSERTIONS
   * }
   */
-class exercise6_ExceptionRejectionRoutesSpec extends WordSpec with Matchers with ScalaFutures with ScalatestRouteTest with ExceptionRejectionRoutes {
+class exercise7_ExceptionRejectionRoutesSpec extends WordSpec with Matchers with ScalaFutures with ScalatestRouteTest with ExceptionRejectionRoutes {
 
   lazy val routes = exceptionRoutes
 

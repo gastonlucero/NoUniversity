@@ -10,10 +10,6 @@ import org.scalatest.{Matchers, WordSpec}
 class exercise1_HttpServerSpec extends WordSpec with Matchers with ScalatestRouteTest with ScalaFutures {
 
 
-
-  /**
-    * Hint, you need to create the new object to start working
-    */
   "HttpServer" should {
     "binding should start the server and receives request" in {
       val stratioHttp = StratioAkkaHttpServer

@@ -1,11 +1,8 @@
 package com.stratio.edu.http.utils
 
 import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport
-
-import com.stratio.edu.http._
+import com.stratio.edu.http.{User, _}
 import spray.json.DefaultJsonProtocol
-
-import com.stratio.edu.http.User
 
 /**
   * This trait contains all implicit (un) marshalling
@@ -13,7 +10,7 @@ import com.stratio.edu.http.User
   */
 trait JsonSupport extends SprayJsonSupport with DefaultJsonProtocol {
 
-  implicit val upgradeServiceJsonFormat = jsonFormat2(UpgradeService)
+  implicit val upgradeServiceJsonFormat = jsonFormat2(Service)
 
   implicit val userJsonFormat = jsonFormat4(User)
   implicit val usersJsonFormat = jsonFormat1(Users)

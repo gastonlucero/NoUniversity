@@ -5,7 +5,7 @@ import com.stratio.edu.http.{ActionPerformed, User}
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-class UsersBackend()  {
+class UsersBackend() {
 
   private var usersCache = Set.empty[User]
 
@@ -14,10 +14,7 @@ class UsersBackend()  {
       usersCache.toList
     }
 
-
-  def getByName(name: String): Future[Option[User]] = Future {
-    usersCache.find(usr => usr.name == name)
-  }
+  def getByName(name: String): Option[User] =  usersCache.find(usr => usr.name == name)
 
   def postOrPut(user: User): Future[ActionPerformed] = Future {
     usersCache = usersCache.takeWhile(u => u.id != user.id) + user

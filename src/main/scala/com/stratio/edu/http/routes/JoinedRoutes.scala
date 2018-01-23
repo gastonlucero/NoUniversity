@@ -16,7 +16,7 @@ import akka.http.scaladsl.server.directives.RouteDirectives.complete
   * or could be an or operator (path("paginated") | path("all")) = here the directive says "is the request is to context pagianted or all,
   * execute for both cases the given route
   */
-trait JoinedRoutes{
+trait JoinedRoutes {
 
   implicit val system: ActorSystem
 
@@ -39,7 +39,7 @@ trait JoinedRoutes{
       (path("byname") & get) {
         parameter('name.as[String]) {
           name => {
-            complete(s"Users with name $name")
+            complete(s"User with name $name")
           }
         }
       } ~

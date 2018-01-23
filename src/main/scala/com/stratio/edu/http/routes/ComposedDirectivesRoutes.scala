@@ -5,15 +5,11 @@ import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.directives.MethodDirectives.get
 import akka.http.scaladsl.server.directives.RouteDirectives.complete
 import akka.http.scaladsl.server.{Directive1, Route}
-import com.stratio.edu.http.actors.{ServicesBackend, UsersBackend}
+import com.stratio.edu.http.utils.BackendServices._
 import com.stratio.edu.http.utils.JsonSupport
-import com.stratio.edu.http.{UpgradeService, User}
+import com.stratio.edu.http.{Service, User}
 
 trait ComposedDirectivesRoutes extends JsonSupport {
-
-
-  final val serviceBackend: ServicesBackend = new ServicesBackend()
-  final val userBackend: UsersBackend = new UsersBackend()
 
   lazy val composedRoutes = pathPrefix("composed") {
     composedServicesRoutes ~ composedUserRoutes ~ {
@@ -62,7 +58,7 @@ trait ComposedDirectivesRoutes extends JsonSupport {
       }
   }
 
-  final val getAndCaseClassExtraction = (get & parameters('id.as[String], 'version.as[String]).as(UpgradeService))
+  final val getAndCaseClassExtraction = (get & parameters('id.as[String], 'version.as[String]).as(Service))
 
   lazy val composedServicesRoutes: Route =
     pathPrefix("services" / "upgrade") {

@@ -8,7 +8,7 @@ import akka.http.scaladsl.server.directives.MethodDirectives.get
 import akka.http.scaladsl.server.directives.PathDirectives.path
 
 
-trait SimpleRoutes  {
+trait SimpleRoutes {
 
   implicit val system: ActorSystem
 
@@ -37,7 +37,7 @@ trait SimpleRoutes  {
       } ~
       path("pingHeader") {
         headerValueByName("myHeader") { header =>
-          complete(s"Pong the header = $header")
+          complete(s"Pong with header = $header")
         }
       }
 

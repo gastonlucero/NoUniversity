@@ -2,7 +2,6 @@ package com.stratio.edu.http.routes
 
 import akka.http.scaladsl.model._
 import akka.http.scaladsl.testkit.ScalatestRouteTest
-import com.stratio.edu.http.routes.JoinedRoutes
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.{Matchers, WordSpec}
 
@@ -23,7 +22,7 @@ class exercise3_JoinedRoutesSpec extends WordSpec with Matchers with ScalaFuture
     "return a users with name when byname method is called (GET /joined/users/byname)" in {
       Get("/joined/users/byname?name=\"Gaston\"") ~> routes ~> check {
         status should ===(StatusCodes.OK)
-        responseAs[String] shouldEqual "Users with name \"Gaston\""
+        responseAs[String] shouldEqual "User with name \"Gaston\""
       }
     }
 

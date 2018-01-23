@@ -9,12 +9,10 @@ import akka.http.scaladsl.server.{Directive0, Directive1, Route}
 
 trait AdvancedDirectivesRoutes {
 
-//  final val serviceBackend: ServicesBackend = new ServicesBackend()
-
-  val timeRequest : Directive0 =  {
+  val logIpTimestamp: Directive0 = {
     extractClientIP.flatMap(ra => {
-      println(ra.getAddress().get().toString)
-      mapInnerRoute( r => r)
+      println(s"Ip = ${ra.getAddress().get().toString} - time = ${System.currentTimeMillis()}")
+      mapInnerRoute(r => r)
     })
   }
 
@@ -37,7 +35,7 @@ trait AdvancedDirectivesRoutes {
   val myCookieDirective = setCookie(HttpCookie("stratioCookie", value = "noUniversity"))
 
   lazy val advancedRoutes =
-    pathPrefix("advanced") {
+    (pathPrefix("advanced") & logIpTimestamp){
       directivesRoutes
     }
 
@@ -45,11 +43,11 @@ trait AdvancedDirectivesRoutes {
   lazy val directivesRoutes: Route =
     pathPrefix("cookie") {
       pathEnd {
-          get {
-            myCookieDirective {
-              complete(StatusCodes.OK, "Response with cookie")
-            }
+        get {
+          myCookieDirective {
+            complete(StatusCodes.OK, "Response with cookie")
           }
+        }
       }
     } ~
       pathPrefix("token") {

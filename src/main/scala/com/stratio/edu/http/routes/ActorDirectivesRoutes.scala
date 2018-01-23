@@ -7,6 +7,7 @@ import akka.pattern.ask
 import akka.util.Timeout
 import com.stratio.edu.http.actors.ActorBackend
 
+import scala.concurrent.Await
 import scala.concurrent.duration._
 
 trait ActorDirectivesRoutes {
@@ -19,12 +20,10 @@ trait ActorDirectivesRoutes {
   lazy val actorBackend = system.actorOf(Props[ActorBackend])
 
   lazy val actorRoutes: Route =
-    pathPrefix("actors") {
-      path("ping") {
-        get {
-          val actorResponse: String = (actorBackend ? "Ping").asInstanceOf[String] //With ask , the response is of type Any
-          complete(200, actorResponse)
-        }
+    pathSuffix("actors") {
+      get {
+        val actorResponse = Await.result(actorBackend ? "Ping", Duration.apply("10s")).asInstanceOf[String] //With ask , the response is of type 'Any'
+        complete(200, actorResponse)
       }
     }
 

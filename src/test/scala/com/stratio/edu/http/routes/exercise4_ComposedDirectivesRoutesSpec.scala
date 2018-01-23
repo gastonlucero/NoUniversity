@@ -62,7 +62,7 @@ class exercise4_ComposedDirectivesRoutesSpec extends WordSpec with Matchers with
         Get("/composed/services/upgrade?id=1&version=0.0.1") ~> routes ~> check {
           status should ===(StatusCodes.OK)
           contentType should ===(ContentTypes.`application/json`)
-          entityAs[UpgradeService].version shouldEqual "SeviceUpgraded 0.0.1"
+          entityAs[Service].version shouldEqual "SeviceUpgraded 0.0.1"
         }
       }
 
