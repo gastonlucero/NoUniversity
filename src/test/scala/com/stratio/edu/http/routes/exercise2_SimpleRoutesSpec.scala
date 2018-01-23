@@ -12,7 +12,7 @@ import org.scalatest.{Matchers, WordSpec}
   * ASSERTIONS
   * }
   */
-class SimpleRoutesSpec extends WordSpec with Matchers with ScalaFutures with ScalatestRouteTest with SimpleRoutes {
+class exercise2_SimpleRoutesSpec extends WordSpec with Matchers with ScalaFutures with ScalatestRouteTest with SimpleRoutes {
 
   val routes = simpleRoutes
 

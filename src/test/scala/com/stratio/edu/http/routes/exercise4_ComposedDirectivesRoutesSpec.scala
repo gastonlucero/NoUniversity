@@ -4,7 +4,6 @@ import akka.http.scaladsl.marshalling.Marshal
 import akka.http.scaladsl.model._
 import akka.http.scaladsl.testkit.ScalatestRouteTest
 import com.stratio.edu.http._
-import com.stratio.edu.http.routes.ComposedDirectivesRoutes
 import com.stratio.edu.http.utils.JsonSupport
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.{Matchers, WordSpec}
@@ -16,7 +15,7 @@ import org.scalatest.{Matchers, WordSpec}
   * ASSERTIONS
   * }
   */
-class ComposedDirectivesRoutesSpec extends WordSpec with Matchers with ScalaFutures with ScalatestRouteTest
+class exercise4_ComposedDirectivesRoutesSpec extends WordSpec with Matchers with ScalaFutures with ScalatestRouteTest
   with JsonSupport with ComposedDirectivesRoutes {
 
   lazy val routes = composedRoutes

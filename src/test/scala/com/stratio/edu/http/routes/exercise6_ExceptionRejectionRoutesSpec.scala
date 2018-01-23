@@ -13,7 +13,7 @@ import org.scalatest.{Matchers, WordSpec}
   * ASSERTIONS
   * }
   */
-class ExceptionRejectionRoutesSpec extends WordSpec with Matchers with ScalaFutures with ScalatestRouteTest with ExceptionRejectionRoutes {
+class exercise6_ExceptionRejectionRoutesSpec extends WordSpec with Matchers with ScalaFutures with ScalatestRouteTest with ExceptionRejectionRoutes {
 
   lazy val routes = exceptionRoutes
 

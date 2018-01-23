@@ -13,7 +13,7 @@ import org.scalatest.{Matchers, WordSpec}
   * ASSERTIONS
   * }
   */
-class JoinedRoutesSpec extends WordSpec with Matchers with ScalaFutures with ScalatestRouteTest with JoinedRoutes {
+class exercise3_JoinedRoutesSpec extends WordSpec with Matchers with ScalaFutures with ScalatestRouteTest with JoinedRoutes {
 
 
   val routes = joinedRoutes

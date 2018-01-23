@@ -13,7 +13,7 @@ import org.scalatest.{Matchers, WordSpec}
   * ASSERTIONS
   * }
   */
-class AdvancedDirectivesRoutesSpec extends WordSpec with Matchers with ScalaFutures with ScalatestRouteTest
+class exercise5_AdvancedDirectivesRoutesSpec extends WordSpec with Matchers with ScalaFutures with ScalatestRouteTest
   with AdvancedDirectivesRoutes {
 
   lazy val routes = advancedRoutes
