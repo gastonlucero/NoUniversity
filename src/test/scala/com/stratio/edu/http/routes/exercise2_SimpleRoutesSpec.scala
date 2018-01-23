@@ -60,7 +60,7 @@ class exercise2_SimpleRoutesSpec extends WordSpec with Matchers with ScalaFuture
     "when you send a header " in {
       Get("/pingHeader") ~> RawHeader("myHeader", "stratio") ~> routes ~> check {
         status shouldEqual StatusCodes.OK
-        responseAs[String] shouldEqual "Pong the header = stratio"
+        responseAs[String] shouldEqual "Pong with header = stratio"
       }
     }
 

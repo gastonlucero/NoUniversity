@@ -11,7 +11,7 @@ trait AdvancedDirectivesRoutes {
 
   val logIpTimestamp: Directive0 = {
     extractClientIP.flatMap(ra => {
-      println(s"Ip = ${ra.getAddress().get().toString} - time = ${System.currentTimeMillis()}")
+      println(s"Ip = ${ra.getAddress()} - time = ${System.currentTimeMillis()}")
       mapInnerRoute(r => r)
     })
   }
