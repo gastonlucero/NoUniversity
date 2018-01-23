@@ -6,10 +6,9 @@ import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.Route
 import akka.http.scaladsl.server.directives.MethodDirectives.get
 import akka.http.scaladsl.server.directives.PathDirectives.path
-import com.stratio.edu.http.utils.ConfigComponent
 
 
-trait SimpleRoutes extends ConfigComponent {
+trait SimpleRoutes  {
 
   implicit val system: ActorSystem
 

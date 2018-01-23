@@ -10,7 +10,7 @@ import akka.{Done, NotUsed}
 import scala.concurrent.Future
 import scala.concurrent.duration._
 
-object StreamsSpec extends App {
+object Streams extends App {
 
   implicit val system = ActorSystem("nouniversity")
 

@@ -1,12 +1,11 @@
 package com.stratio.edu.http.actors
 
-import com.stratio.edu.http.utils.ConfigComponent
-import com.stratio.edu.http.{ActionPerformed, User, Users}
+import com.stratio.edu.http.{ActionPerformed, User}
 
-import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 
-class UsersBackend() extends ConfigComponent {
+class UsersBackend()  {
 
   private var usersCache = Set.empty[User]
 
@@ -34,7 +33,4 @@ class UsersBackend() extends ConfigComponent {
 
   }
 
-  def paginated(page: Int, offset: Int, limit: Int): Future[Users] = Future {
-    Users(Seq.empty[User])
-  }
 }

@@ -6,9 +6,8 @@ import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.directives.MethodDirectives.get
 import akka.http.scaladsl.server.directives.RouteDirectives.complete
 import akka.http.scaladsl.server.{ExceptionHandler, MethodRejection, RejectionHandler}
-import com.stratio.edu.http.utils.{ConfigComponent, JsonSupport}
 
-trait ExceptionRejectionRoutes extends JsonSupport with ConfigComponent {
+trait ExceptionRejectionRoutes {
 
   implicit val system: ActorSystem
 
@@ -16,7 +15,7 @@ trait ExceptionRejectionRoutes extends JsonSupport with ConfigComponent {
     ExceptionHandler {
       case ex: ArithmeticException =>
         extractUri { uri =>
-          logger.error(s"Exception Handler catch the exception")
+          println(s"Exception Handler catch the exception")
           complete(HttpResponse(StatusCodes.InternalServerError,
             entity = HttpEntity(ContentType(MediaTypes.`application/json`),
               s"Request to $uri could not be handled normally [${ex.getMessage}]")))

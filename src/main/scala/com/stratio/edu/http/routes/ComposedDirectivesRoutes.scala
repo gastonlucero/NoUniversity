@@ -6,10 +6,10 @@ import akka.http.scaladsl.server.directives.MethodDirectives.get
 import akka.http.scaladsl.server.directives.RouteDirectives.complete
 import akka.http.scaladsl.server.{Directive1, Route}
 import com.stratio.edu.http.actors.{ServicesBackend, UsersBackend}
-import com.stratio.edu.http.utils.{ConfigComponent, JsonSupport}
+import com.stratio.edu.http.utils.JsonSupport
 import com.stratio.edu.http.{UpgradeService, User}
 
-trait ComposedDirectivesRoutes extends JsonSupport with ConfigComponent {
+trait ComposedDirectivesRoutes extends JsonSupport {
 
 
   final val serviceBackend: ServicesBackend = new ServicesBackend()
@@ -33,7 +33,7 @@ trait ComposedDirectivesRoutes extends JsonSupport with ConfigComponent {
       postOrPutDirective { method => {
         entity(as[User]) {
           user => {
-            logger.debug(s"Method invoked ${method.value}")
+            println(s"Method invoked ${method.value}")
             onSuccess(userBackend.postOrPut(user)) {
               userUpsert => {
                 complete(201, userUpsert)

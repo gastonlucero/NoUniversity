@@ -5,7 +5,6 @@ import akka.http.scaladsl.server.Directives.{parameter, _}
 import akka.http.scaladsl.server.Route
 import akka.http.scaladsl.server.directives.MethodDirectives.get
 import akka.http.scaladsl.server.directives.RouteDirectives.complete
-import com.stratio.edu.http.utils.ConfigComponent
 
 /**
   * JoinedRoutes combines two differentes Routes, inside a common context, named "joined". For do that akka uses the ~
@@ -17,7 +16,7 @@ import com.stratio.edu.http.utils.ConfigComponent
   * or could be an or operator (path("paginated") | path("all")) = here the directive says "is the request is to context pagianted or all,
   * execute for both cases the given route
   */
-trait JoinedRoutes extends ConfigComponent {
+trait JoinedRoutes{
 
   implicit val system: ActorSystem
 

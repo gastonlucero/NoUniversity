@@ -6,9 +6,8 @@ import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.directives.MethodDirectives.get
 import akka.http.scaladsl.server.directives.RouteDirectives.complete
 import akka.http.scaladsl.server.{Directive0, Directive1, Route}
-import com.stratio.edu.http.utils.ConfigComponent
 
-trait AdvancedDirectivesRoutes extends ConfigComponent {
+trait AdvancedDirectivesRoutes {
 
 //  final val serviceBackend: ServicesBackend = new ServicesBackend()
 
