@@ -1,0 +1,9 @@
+Exercise1:
+
+
+
+curl http://localhost:8080/
+curl http://localhost:8080/ping
+curl http://localhost:8080/ping/numa
+curl http://localhost:8080/pingUrlParam?number=10
+gaston$ curl --header "myHeader: hola numa" http://localhost:8080/pingHeader

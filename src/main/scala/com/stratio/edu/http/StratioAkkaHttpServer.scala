@@ -12,7 +12,7 @@ import scala.util.{Failure, Success}
 
 trait AllRoutes extends SimpleRoutes with JoinedRoutes with ExceptionRejectionRoutes with ComposedDirectivesRoutes with AdvancedDirectivesRoutes with ActorDirectivesRoutes {
 
-  val httpRoutes = simpleRoutes ~ joinedRoutes ~ composedRoutes ~ advancedRoutes ~ actorRoutes ~ exceptionRoutes
+  lazy val httpRoutes = simpleRoutes ~ joinedRoutes ~ composedRoutes ~ advancedRoutes ~ actorRoutes ~ exceptionRoutes
 }
 
 

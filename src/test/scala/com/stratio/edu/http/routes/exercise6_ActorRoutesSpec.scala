@@ -7,6 +7,8 @@ import org.scalatest.{Matchers, WordSpec}
 
 class exercise6_ActorRoutesSpec extends WordSpec with Matchers with ScalaFutures with ScalatestRouteTest with ActorDirectivesRoutes {
 
+  implicit val executionContext =  system.dispatcher
+
   lazy val routes = actorRoutes
 
   "Actors" should {

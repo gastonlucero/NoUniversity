@@ -1,47 +1,40 @@
 package com.stratio.edu.http.streams
 
-import java.util.concurrent.TimeUnit
-
 import akka.actor.ActorSystem
 import akka.stream.scaladsl.{Broadcast, Flow, GraphDSL, Keep, Merge, RunnableGraph, Sink, Source}
-import akka.stream.{ActorMaterializer, ClosedShape, OverflowStrategy}
+import akka.stream.{ActorMaterializer, ClosedShape}
 import akka.{Done, NotUsed}
 
 import scala.concurrent.Future
-import scala.concurrent.duration._
 
 object Streams extends App {
 
-  implicit val system = ActorSystem("nouniversity")
+  implicit val system = ActorSystem("numa")
 
   implicit val materializer = ActorMaterializer()
 
-  simpleStream()
-  graphStrem()
+  oneLineStream()
+  graphStream()
 
-  def simpleStream() = {
+  def oneLineStream() = {
     Source(1 to 100).via(Flow[Int].fold(0)((number, acc) => acc + number)).to(Sink.foreach(println)).run()
-    system.terminate()
   }
 
-  def graphStrem() = {
-    val duration = FiniteDuration(1, TimeUnit.SECONDS)
+  def graphStream() = {
+
     val source: Source[Int, NotUsed] = Source(1 to 100)
     val sink: Sink[Double, Future[Done]] = Sink.foreach(println)
-
     val areaFlow: Flow[Int, Double, _] = Flow[Int].map(i => {
       Math.PI * Math.pow(i, 2)
     })
 
-    val streamToSink: RunnableGraph[NotUsed] = source.via(areaFlow).to(sink)
+    val calculateArea: RunnableGraph[NotUsed] = source.via(areaFlow).to(sink)
+    calculateArea.run()
 
-    val bufferedSink2 = Flow[Int].buffer(1, OverflowStrategy.fail)
-      .toMat(Sink.foreach(println))(Keep.right)
-
-    source.to(bufferedSink2).run()
+    val printValuesFlow = Flow[Int].toMat(Sink.foreach(value => println(s"$value")))(Keep.right)
+    source.to(printValuesFlow).run()
 
     val streamViaMat: RunnableGraph[Future[Done]] = source.via(areaFlow).toMat(sink)(Keep.right)
-    streamToSink.run()
     streamViaMat.run()
 
     val perimeterFlow: Flow[Int, Double, NotUsed] = Flow[Int].map(i => i * 2 * Math.PI)
