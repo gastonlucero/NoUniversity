@@ -6,22 +6,12 @@ import akka.http.scaladsl.server.Route
 import akka.http.scaladsl.server.directives.MethodDirectives.get
 import akka.http.scaladsl.server.directives.RouteDirectives.complete
 
-/**
-  * JoinedRoutes combines two differentes Routes, inside a common context, named "joined". For do that akka uses the ~
-  * operator
-  *
-  * Now in the implementation of the Route ,we can join differents "akka directives" to see more graphics the definition
-  * e.g get & parameters = in one line this directive says "the method is get and with urlParameters"
-  *
-  * or could be an or operator (path("paginated") | path("all")) = here the directive says "is the request is to context pagianted or all,
-  * execute for both cases the given route
-  */
 trait JoinedRoutes {
 
   implicit val system: ActorSystem
 
   /**
-    * When differents contexts have the same urlPrefix, is usefull combine then
+    * When different contexts have the same urlPrefix, is useful combine then
     * In this case under /joined  there are two context , /users and /services
     */
   lazy val joinedRoutes = pathPrefix("joined") {

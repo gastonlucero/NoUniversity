@@ -12,7 +12,6 @@ trait SimpleRoutes {
 
   implicit val system: ActorSystem
 
-  //Route es a type defined = RequestContext ⇒ Future[RouteResult]
   lazy val simpleRoutes: Route =
     pathSingleSlash {
       complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, "<html><body><b>Stratio No University!</b></body></html>"))

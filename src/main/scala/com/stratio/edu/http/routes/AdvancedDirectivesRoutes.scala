@@ -35,7 +35,7 @@ trait AdvancedDirectivesRoutes {
   val myCookieDirective = setCookie(HttpCookie("stratioCookie", value = "noUniversity"))
 
   lazy val advancedRoutes =
-    (pathPrefix("advanced") & logIpTimestamp){
+    (pathPrefix("advanced") & logIpTimestamp) {
       directivesRoutes
     }
 

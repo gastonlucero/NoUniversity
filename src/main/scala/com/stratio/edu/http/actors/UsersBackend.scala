@@ -23,6 +23,7 @@ class UsersBackend() {
 
   def delete(id: String) = Future {
     val user = usersCache.find(u => u.id == id)
+    usersCache = usersCache -- user
     user match {
       case Some(usr) => ActionPerformed(s"User ${usr.name} deleted")
       case None => ActionPerformed(s"User with id $id not found")
