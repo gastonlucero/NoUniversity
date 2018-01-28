@@ -10,20 +10,10 @@ trait JoinedRoutes {
 
   implicit val system: ActorSystem
 
-  /**
-    * When different contexts have the same urlPrefix, is useful combine then
-    * In this case under /joined  there are two context , /users and /services
-    */
   lazy val joinedRoutes = pathPrefix("joined") {
     userRoutes ~ servicesRoutes
   }
 
-  /**
-    * The entry point here is /joined/users ...
-    * The first method has parameter directive
-    * The second combine in single line the predicate : 'the method is a GET and receive parameters page and offset, and
-    * limit but it is optional with default value
-    */
   lazy val userRoutes: Route =
     pathPrefix("users") {
       (path("byname") & get) {
@@ -42,11 +32,6 @@ trait JoinedRoutes {
         }
     }
 
-  /**
-    * The entry point here is /joined/services ...
-    * If the request match partially with services, but after that doesn´t match any context,
-    * the default entry handles the request
-    */
   lazy val servicesRoutes: Route =
     pathPrefix("services") {
       get {

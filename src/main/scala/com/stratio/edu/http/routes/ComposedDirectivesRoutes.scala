@@ -18,10 +18,6 @@ trait ComposedDirectivesRoutes extends JsonSupport {
     }
   }
 
-  /**
-    * the directive is composed by an LOGICAL OR between directives, the main idea is if the path /users with either
-    * post or put method is called, they have a common route entry point
-    */
   final val postOrPutDirective: Directive1[HttpMethod] = (post | put) & extractMethod
 
   lazy val composedUserRoutes: Route = pathPrefix("users") {

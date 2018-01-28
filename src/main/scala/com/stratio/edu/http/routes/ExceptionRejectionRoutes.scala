@@ -31,7 +31,6 @@ trait ExceptionRejectionRoutes {
     resetTimeout = 5.second
   )
 
-
   def myRejectionHandler = RejectionHandler.newBuilder()
     .handleCircuitBreakerOpenRejection { circuit =>
       complete(HttpResponse(StatusCodes.Conflict, entity = "Numa CircuitBreaker remaining time = " + circuit.cause.remainingDuration))
