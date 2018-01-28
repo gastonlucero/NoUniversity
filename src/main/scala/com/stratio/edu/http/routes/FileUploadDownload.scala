@@ -14,6 +14,11 @@ import akka.util.ByteString
 
 import scala.concurrent.ExecutionContext
 
+/**
+  * curl -X POST - H "Content-Type: multipart/form-data" - F "csv=@hola.txt" http //localhost:8080/files/
+  * curl http //localhost:8080/files/download
+  *
+  */
 trait FileUploadDownload {
 
   implicit val system: ActorSystem
