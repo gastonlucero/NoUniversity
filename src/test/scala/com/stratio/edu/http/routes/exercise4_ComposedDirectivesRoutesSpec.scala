@@ -33,6 +33,14 @@ class exercise4_ComposedDirectivesRoutesSpec extends WordSpec with Matchers with
         }
       }
 
+      "get all users from a future (GET /composed/users)" in {
+        Get("/composed/users") ~> routes ~> check {
+          status should ===(StatusCodes.OK)
+          contentType should ===(ContentTypes.`application/json`)
+          entityAs[List[User]] shouldEqual (List(user))
+        }
+      }
+
       "delete and existing user return a successful message" in {
         Delete("/composed/users/1") ~> routes ~> check {
           status should ===(StatusCodes.OK)
@@ -42,19 +50,13 @@ class exercise4_ComposedDirectivesRoutesSpec extends WordSpec with Matchers with
       }
 
       "trying to delete and nonexistent user return a message" in {
-        Delete("/composed/users/10") ~> routes ~> check {
+        val id = 10
+        Delete(s"/composed/users/$id") ~> routes ~> check {
           status should ===(StatusCodes.OK)
-          responseAs[String] shouldEqual """{"description":"User with id 10 not found"}"""
+          entityAs[ActionPerformed] shouldEqual ActionPerformed(s"User with id $id not found")
         }
       }
 
-      "get all users from a future (GET /composed/users)" in {
-        Get("/composed/users") ~> routes ~> check {
-          status should ===(StatusCodes.OK)
-          contentType should ===(ContentTypes.`application/json`)
-          entityAs[List[User]] shouldEqual (List(user))
-        }
-      }
     }
 
     "Services context" should {

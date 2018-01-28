@@ -7,7 +7,7 @@ class ActorBackend extends Actor {
   override def receive = {
     case msg: String => {
       println(s"String message $msg")
-      sender ! "PongA"
+      sender ! "Pong"
     }
     case _ => unhandled()
   }

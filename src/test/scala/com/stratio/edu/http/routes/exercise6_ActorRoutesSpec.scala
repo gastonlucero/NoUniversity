@@ -16,7 +16,7 @@ class exercise6_ActorRoutesSpec extends WordSpec with Matchers with ScalaFutures
       val request = HttpRequest(uri = "actors")
       request ~> routes ~> check {
         status should ===(StatusCodes.OK)
-        responseAs[String] should be eq "Pong"
+        responseAs[String] shouldEqual("Pong")
       }
     }
   }
