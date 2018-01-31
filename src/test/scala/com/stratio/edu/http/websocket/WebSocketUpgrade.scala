@@ -2,15 +2,16 @@ package com.stratio.edu.http.websocket
 
 import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
+import akka.http.scaladsl.model.ContentTypes
 import akka.http.scaladsl.model.ws.{BinaryMessage, Message, TextMessage}
-import akka.http.scaladsl.server.Directives.{handleWebSocketMessages, pathPrefix}
+import akka.http.scaladsl.server.Directives.{handleWebSocketMessages, pathPrefix, _}
 import akka.stream.ActorMaterializer
 import akka.stream.scaladsl.{Flow, Sink, Source}
 
 import scala.util.Random
 
 /**
-  * Run this file , and open index.html to test the example
+  * Run this file , with /static endpoint
   */
 object WebSocketUpgrade extends App {
 
@@ -46,6 +47,8 @@ object WebSocketUpgrade extends App {
 
   val websocketRoute = pathPrefix("websocket") {
     handleWebSocketMessages(randomFlow)
+  } ~ path("static") {
+    getFromResource("web/index.html", ContentTypes.`text/html(UTF-8)`)
   }
 
   val bindingFuture = Http().bindAndHandle(websocketRoute, "127.0.0.1", 7000)

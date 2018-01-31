@@ -32,7 +32,7 @@ trait AdvancedDirectivesRoutes {
     * This directive add custom cookie to the response
     *
     */
-  val myCookieDirective = setCookie(HttpCookie("stratioCookie", value = "noUniversity"))
+  val myCookieDirective :Directive0 = setCookie(HttpCookie("stratioCookie", value = "noUniversity"))
 
   lazy val advancedRoutes =
     (pathPrefix("advanced") & logIpTimestamp) {

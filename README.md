@@ -1,6 +1,6 @@
-# README #
+### Slides ###
 
-This README would normally document whatever steps are necessary to get your application up and running.
+https://docs.google.com/presentation/d/147bXbIrWHNL_lfoB5pEImCsYedFBiWqMAbcyc5ixLBg/edit#slide=id.p
 
 ### Exercise curls ###
 Exercise2:

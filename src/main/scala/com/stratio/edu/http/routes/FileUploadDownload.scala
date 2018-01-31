@@ -15,8 +15,8 @@ import akka.util.ByteString
 import scala.concurrent.ExecutionContext
 
 /**
-  * curl -X POST - H "Content-Type: multipart/form-data" - F "csv=@hola.txt" http //localhost:8080/files/
-  * curl http //localhost:8080/files/download
+  * curl -X POST -H "Content-Type: multipart/form-data" -F "csv=@hola.txt" http://localhost:8080/files/
+  * curl http://localhost:8080/files/download
   *
   */
 trait FileUploadDownload {
@@ -26,7 +26,7 @@ trait FileUploadDownload {
 
   implicit val executionContext: ExecutionContext
 
-  lazy val fileRoute: Route = pathPrefix("files") {
+  lazy val fileRoutes: Route = pathPrefix("files") {
     fileUpload("csv") {
       case (metadata, fileByteSource) =>
         val file = new File("/tmp/test.csv")
