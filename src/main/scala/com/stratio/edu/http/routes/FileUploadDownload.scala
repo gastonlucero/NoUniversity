@@ -4,8 +4,6 @@ import java.io.File
 import java.nio.file.StandardOpenOption._
 
 import akka.actor.ActorSystem
-import akka.http.scaladsl.model.ContentTypes
-import akka.http.scaladsl.server.ContentNegotiator.Alternative.ContentType
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.Route
 import akka.stream.ActorMaterializer
@@ -40,7 +38,7 @@ trait FileUploadDownload {
         }
         }
     } ~ path("download") {
-      getFromFile(new File("/tmp/test.csv"), ContentType.apply(ContentTypes.`text/csv(UTF-8)`).contentType)
+         ???
     }
   }
 }
