@@ -1,13 +1,16 @@
 package com.stratio.edu.http.routes
 
+import scala.concurrent.Future
+
 import akka.http.scaladsl.model.{HttpMethod, StatusCodes}
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.directives.MethodDirectives.get
 import akka.http.scaladsl.server.directives.RouteDirectives.complete
 import akka.http.scaladsl.server.{Directive1, Route}
+
 import com.stratio.edu.http.utils.BackendServices._
 import com.stratio.edu.http.utils.JsonSupport
-import com.stratio.edu.http.{Service, User}
+import com.stratio.edu.http.{ActionPerformed, User}
 
 trait ComposedDirectivesRoutes extends JsonSupport {
 
@@ -26,23 +29,15 @@ trait ComposedDirectivesRoutes extends JsonSupport {
         entity(as[User]) {
           user => {
             println(s"Method invoked ${method.value}")
-            onSuccess(userBackend.postOrPut(user)) {
-              userUpsert => {
-                complete(201, userUpsert)
-              }
-            }
+            val response :Future[ActionPerformed]= userBackend.postOrPut(user)
+            ??? // use the correct directive
           }
         }
       }
       }
     } ~
       path(Segment) { id =>
-        delete {
-          val deleted = userBackend.delete(id)
-          onSuccess(deleted) {
-            del => complete(del)
-          }
-        }
+       ??? // delete method
       } ~
       get {
         onSuccess(userBackend.getAll()) {
@@ -54,13 +49,11 @@ trait ComposedDirectivesRoutes extends JsonSupport {
       }
   }
 
-  final val getAndCaseClassExtraction = (get & parameters('id.as[String], 'version.as[String]).as(Service))
+  //This Directive combine "get" directive AND extract parameters as case class Service
+  lazy val getAndCaseClassExtraction = ???
 
   lazy val composedServicesRoutes: Route =
     pathPrefix("services" / "upgrade") {
-      getAndCaseClassExtraction {
-        upgradeService =>
-          complete(serviceBackend.upgrade(upgradeService))
-      }
+      ??? // use getAndCaseClassExtraction and complete the request
     }
 }

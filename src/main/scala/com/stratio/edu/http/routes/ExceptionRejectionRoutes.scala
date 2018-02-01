@@ -19,10 +19,7 @@ trait ExceptionRejectionRoutes {
 
   def exceptionHandler: ExceptionHandler =
     ExceptionHandler {
-      case ex: ArithmeticException =>
-        extractUri { uri =>
-          complete(StatusCodes.InternalServerError, "Division By Zero")
-        }
+      ??? // catch the exception and complete the request
     }
 
   lazy val circuitBreaker = new CircuitBreaker(system.scheduler,
@@ -68,7 +65,9 @@ trait ExceptionRejectionRoutes {
         path("exception") {
           {
             (get & parameters('number.as[Int])) { number =>
-              complete(s"Exception path ${number / 0}")
+              complete(s"Exception path ${number / 0}") //This is a RuntimeError, in this case exceptionHandler
+              // catch the exception and generate the http response, complete exceptionHandler
+              //Hint : Division by zero throw ArithmeticException
             }
           }
         }

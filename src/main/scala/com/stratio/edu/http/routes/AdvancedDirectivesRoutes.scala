@@ -1,7 +1,6 @@
 package com.stratio.edu.http.routes
 
 import akka.http.scaladsl.model.StatusCodes
-import akka.http.scaladsl.model.headers.HttpCookie
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.directives.MethodDirectives.get
 import akka.http.scaladsl.server.directives.RouteDirectives.complete
@@ -32,7 +31,7 @@ trait AdvancedDirectivesRoutes {
     * This directive add custom cookie to the response
     *
     */
-  val myCookieDirective :Directive0 = setCookie(HttpCookie("stratioCookie", value = "noUniversity"))
+  lazy val myCookieDirective : Directive0 = ???
 
   lazy val advancedRoutes =
     (pathPrefix("advanced") & logIpTimestamp) {

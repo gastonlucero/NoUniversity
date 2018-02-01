@@ -46,3 +46,6 @@ curl 'http://localhost:8080/myHandlers/breaker/1s'
 
 ### Assignments ###
 
+Tests under folder routes, are related to Http Routes, defined in web server. Replace ??? in code
+and run the test.
+Result =  27 test = 27 ok 

@@ -14,8 +14,6 @@ class UsersBackend() {
       usersCache.toList
     }
 
-  def getByName(name: String): Option[User] =  usersCache.find(usr => usr.name == name)
-
   def postOrPut(user: User): Future[ActionPerformed] = Future {
     usersCache = usersCache.takeWhile(u => u.id != user.id) + user
     ActionPerformed(s"User ${user.name} upserted")

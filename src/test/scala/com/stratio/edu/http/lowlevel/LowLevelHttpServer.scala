@@ -6,8 +6,8 @@ import akka.http.scaladsl.model.HttpMethods._
 import akka.http.scaladsl.model._
 import akka.stream.ActorMaterializer
 import akka.stream.scaladsl.{Flow, Sink}
-
 import scala.concurrent.Future
+import scala.util.{Failure, Success}
 
 
 /**
@@ -48,7 +48,7 @@ object LowLevelHttpServer extends App {
     case r: HttpRequest => {
       println("Unknown")
       r.discardEntityBytes() // Important Related to slide 25 = StreamingWay
-      HttpResponse(404, entity = "Unknown resource!")
+      HttpResponse(404, entity = " FunctionWay Unknown resource!")
     }
   }
   val serverSource = Http().bind(interface = "localhost", port = 9000)
@@ -57,6 +57,10 @@ object LowLevelHttpServer extends App {
       connection => connection.handleWithSyncHandler(functionWayRequestHandler) // connection = IncomingConnection
     }
     ).run()
+  bindingFuture.onComplete{
+    case Success(s) => println("LowLevel Server in FunctionWay at port 9000")
+    case Failure(f) => println("Error LowLevel Server in FunctionWay at port 9000")
+  }
 
   // This is the same
   //
@@ -70,9 +74,23 @@ object LowLevelHttpServer extends App {
       println("GET / => AsyncWay")
       Future(HttpResponse(entity = HttpEntity(ContentTypes.`text/html(UTF-8)`, "<html><body><b>Stratio No University! Future way</b></body></html>")))
     }
+    case HttpRequest(GET, Uri.Path("/ping"), _, _, _) => {
+      println("GET /ping => AsyncWay")
+      Future(HttpResponse(entity = "Pong!"))
+    }
+    case r: HttpRequest => {
+      println("Unknown")
+      r.discardEntityBytes() // Important Related to slide 25 = StreamingWay
+      Future(HttpResponse(404, entity = " AsyncWay Unknown resource!"))
+    }
   }
-  val serverAsync = Http().bindAndHandleAsync(requestHandlerAsync, interface = "localhost", port = 9200)
 
+  val serverAsync :Future[Http.ServerBinding] = Http().bindAndHandleAsync(requestHandlerAsync, interface = "localhost", port =
+    9200)
+  serverAsync.onComplete{
+      case Success(s) => println("LowLevel Server in AsyncWay at port 9200")
+      case Failure(f) => println("Error LowLevel Server in AsyncWay at port 9200")
+    }
 
   // RequestHandler with Streams : Source[HttpRequest] => Flow[HttpRequest,HttpResponse] => Sink[HttpResponse]
   val flowHandler: Flow[HttpRequest, HttpResponse, _] = Flow[HttpRequest].map(httpRequest => {
@@ -81,12 +99,21 @@ object LowLevelHttpServer extends App {
         println("GET / => FlowWay")
         HttpResponse(entity = HttpEntity(ContentTypes.`text/html(UTF-8)`, "<html><body><b>Stratio No University! Stream Way</b></body></html>"))
       }
+      case HttpRequest(GET, Uri.Path("/ping"), _, _, _) => {
+        println("GET /ping => FlowWay")
+        HttpResponse(entity = "Pong!")
+      }
       case HttpRequest(_, _, _, _, _) => {
         httpRequest.discardEntityBytes()
         println("Unknown endpoint")
-        HttpResponse(status = StatusCodes.NotFound, entity = HttpEntity(ContentTypes.`text/html(UTF-8)`, "Unknown endpoint"))
+        HttpResponse(status = StatusCodes.NotFound, entity = HttpEntity(ContentTypes.`text/html(UTF-8)`, "FlowWay " +
+          "Unknown endpoint"))
       }
     }
   })
-  val serverFlow = Http().bindAndHandle(flowHandler, interface = "localhost", port = 9300)
+  val serverFlow : Future[Http.ServerBinding] = Http().bindAndHandle(flowHandler, interface = "localhost", port = 9300)
+  serverFlow.onComplete{
+      case Success(s) => println("LowLevel Server in FlowWay at port 9300")
+      case Failure(f) => println("Error LowLevel Server in FlowWay at port 9300")
+    }
 }

@@ -23,16 +23,10 @@ trait SimpleRoutes {
       } ~
       path("ping" / Segment) {
         pathParam =>
-          get {
-            complete(StatusCodes.OK, s"Pong $pathParam!")
-          }
+          ??? //Complete with GET method
       } ~
       path("pingUrlParam") {
-        parameter('number.as[Int]) {
-          numberParameter => {
-            complete(200 -> HttpEntity(ContentTypes.`application/json`, s"Pong $numberParameter!"))
-          }
-        }
+        ??? //Use parameter directive and read param 'number'
       } ~
       path("pingHeader") {
         headerValueByName("myHeader") { header =>
