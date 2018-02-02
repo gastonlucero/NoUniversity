@@ -23,7 +23,7 @@ trait JoinedRoutes {
           }
         }
       } ~
-        (path("paginated")) { //request path could be paginated OR all,add path for "all" endpoint
+        (path("paginated") | ??? ) { //request path could be paginated OR all, task add path for "all" endpoint
           (get & parameters('page.as[Int] ? 1, 'offset.as[Int] ? 0, 'limit.as[Int].?(10))) {
             (page, offset, limit) => {
               complete(s"/users/paginated or /users/all page=$page, offset=$offset,limit=$limit")
