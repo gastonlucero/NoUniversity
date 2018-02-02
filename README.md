@@ -49,3 +49,17 @@ curl 'http://localhost:8080/myHandlers/breaker/1s'
 Tests under folder routes, are related to Http Routes, defined in web server. Replace ??? in code
 and run the test.
 Result =  27 test = 27 ok 
+
+### Extra resources ###
+
+Examples under test folder:
+        
+        /client: Client implementations
+        
+        /lowlevel: WebServer with lowlevel syntax
+        
+        /streams: AkkaStream examples
+        
+        /websocker: WebSockect example
+        
+        FirstWebServer: Get started example
